@@ -3,6 +3,55 @@ import sqlite3
 
 app = Flask(__name__)
 
+
+# Inicio con los verbos
+@app.route('/')
+def inicio():
+    return """
+    <html>
+        <head>
+            <title>Documentación API de Incidentes</title>
+        </head>
+        <body>
+            <h1>API de Gestión de Incidentes</h1>
+            <table >
+                <tr>
+                    <th>Método</th>
+                    <th>Endpoint</th>
+                    <th>Descripción</th>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td>/incidents</td>
+                    <td>Crea un nuevo incidente.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/incidents</td>
+                    <td>Obtiene la lista de incidentes.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/incidents/{id}</td>
+                    <td>Obtiene un incidente específico.</td>
+                </tr>
+                <tr>
+                    <td>PUT</td>
+                    <td>/incidents/{id}</td>
+                    <td>Actualiza el estado de un incidente.</td>
+                </tr>
+                <tr>
+                    <td>DELETE</td>
+                    <td>/incidents/{id}</td>
+                    <td>Elimina un incidente reportado por error.</td>
+                </tr>
+            </table>
+        </body>
+    </html>
+    """
+    
+    
+
 # Inicializar base de datos
 with sqlite3.connect("incidents.db") as db:
     db.execute("""
