@@ -54,5 +54,28 @@ def create_incident():
     return jsonify({"message": "Incidente creado exitosamente"}), 201
 
 
+# Actualizar los incidentes
+@app.route("/incidents/<int:id>", methods=["PUT"])
+def update_incident(id):
+    data = request.get_json()
+    status = data.get("status")
+
+    if status not in ["pendiente", "en proceso", "resuelto"]:
+        return jsonify({"error": "Estado no válido"}), 400
+
+    conn = sqlite3.connect("incidents.db")
+    cursor = conn.cursor()
+    cursor.execute("""
+        UPDATE incidents
+        SET status = ?
+        WHERE id = ?
+    """, (status, id))
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "Estado actualizado exitosamente"}), 200
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
