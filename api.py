@@ -16,5 +16,19 @@ with sqlite3.connect("incidents.db") as db:
     """)
 
 
+# Creamos los endpoints
+
+#Obtener todos los incidentes
+@app.route("/incidents", methods=["GET"])
+def get_incidents():
+    conn = sqlite3.connect("incidents.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM incidents")
+    incidents = cursor.fetchall()
+    conn.close()
+
+    return jsonify(incidents)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
