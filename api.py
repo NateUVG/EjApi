@@ -75,6 +75,20 @@ def update_incident(id):
 
     return jsonify({"message": "Estado actualizado exitosamente"}), 200
 
+# Get con id de incidente
+@app.route("/incidents/<int:id>", methods=["GET"])
+def get_incident(id):
+    conn = sqlite3.connect("incidents.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM incidents WHERE id = ?", (id,))
+    incident = cursor.fetchone()
+    conn.close()
+
+    if incident:
+        return jsonify(incident)
+    else:
+        return jsonify({"error": "Incidente no encontrado"}), 404
+    
 
 
 if __name__ == "__main__":
