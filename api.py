@@ -88,8 +88,18 @@ def get_incident(id):
         return jsonify(incident)
     else:
         return jsonify({"error": "Incidente no encontrado"}), 404
-    
 
+    
+# Eliminar
+@app.route("/incidents/<int:id>", methods=["DELETE"])
+def delete_incident(id):
+    conn = sqlite3.connect("incidents.db")
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM incidents WHERE id = ?", (id,))
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "Incidente eliminado exitosamente"}), 200
 
 if __name__ == "__main__":
     app.run(debug=True)
